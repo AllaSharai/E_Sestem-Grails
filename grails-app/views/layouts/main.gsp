@@ -34,9 +34,9 @@
         <div class="navbar-collapse collapse" aria-expanded="false" style="height: 0.8px;">
             <ul class="nav navbar-nav navbar-left">
                 <li><a href="/">Home</a></li>
-                <li><a href="/userPage">User</a></li>
-                <li><a href="/clercPage">Clerc</a></li>
-                <li><a href="/adminPage">Admin</a></li>
+                <li><a href="/main/userPage">User</a></li>
+                <li><a href="/main/clercPage">Clerc</a></li>
+                <li><a href="/main/adminPage">Admin</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <sec:ifNotLoggedIn>
