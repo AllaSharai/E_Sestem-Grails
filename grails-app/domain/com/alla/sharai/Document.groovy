@@ -10,7 +10,7 @@ class Document {
 
     static constraints = {
         title nullable: false, blank: false
-        text nullable: false, blank: false
+        text nullable: false, blank: false, widget: 'textarea'
         approved nullable:false, default: false
     }
 }
