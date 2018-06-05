@@ -12,6 +12,18 @@
     <asset:stylesheet src="application.css"/>
 
     <g:layoutHead/>
+
+    <style>
+    .footer {
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        color: white;
+        text-align: left;
+    }
+    </style>
+
 </head>
 
 <body>
@@ -26,9 +38,9 @@
                 <span class="icon-bar"></span>
             </button>
 
-            <a class="navbar-brand" href="/#">
+          <!--  <a class="navbar-brand" href="/#">
                 <asset:image src="grails.svg" alt="Grails Logo"/>
-            </a>
+            </a> -->
         </div>
 
         <div class="navbar-collapse collapse" aria-expanded="false" style="height: 0.8px;">
