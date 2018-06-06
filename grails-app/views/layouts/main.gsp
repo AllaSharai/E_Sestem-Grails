@@ -58,7 +58,17 @@
                 <sec:ifLoggedIn>
                     <li><a href="/logout"><g:message code="logoutPage.label"/></a></li>
                 </sec:ifLoggedIn>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                        <g:message code="languages" default="Languages"/> <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <navBar:localeDropdownListItems uri="${request.forwardURI}"/>
+                    </ul>
+                </li>
             </ul>
+
+
         </div>
     </div>
 </div>
