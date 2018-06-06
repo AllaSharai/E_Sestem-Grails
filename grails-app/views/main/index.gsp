@@ -22,7 +22,7 @@
 <body>
 
 <div class="container">
-    <h2>Najnowsze wiadomości</h2>
+    <h2><g:message code="title.label"/></h2>
     <div id="myCarousel" class="carousel slide" data-ride="carousel">
         <!-- Indicators -->
         <ol class="carousel-indicators">
@@ -37,7 +37,7 @@
             <div class="item active">
                 <img class="img500px" src="https://paradisetour.pl/wp-content/uploads/2017/11/Brama-wej%C5%9Bciowa-do-Manufaktury-i-hotel-Andels-%C5%81%C3%B3d%C5%BA.jpg" alt="Los Angeles" >
                 <div class="carousel-caption">
-                    <h3>Manufaktura</h3>
+                    <h3><g:message code="manufactura.label"/></h3>
                     <p>Mieszkania na sprzedaż</p>
                 </div>
             </div>

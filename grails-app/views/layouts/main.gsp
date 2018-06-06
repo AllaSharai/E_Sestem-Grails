@@ -45,18 +45,18 @@
 
         <div class="navbar-collapse collapse" aria-expanded="false" style="height: 0.8px;">
             <ul class="nav navbar-nav navbar-left">
-                <li><a href="/">Home</a></li>
-                <li><a href="/main/userPage">User</a></li>
-                <li><a href="/main/clercPage">Clerc</a></li>
-                <li><a href="/main/adminPage">Admin</a></li>
+                <li><a href="/"><g:message code="homePage.label"/></a></li>
+                <li><a href="/main/userPage"><g:message code="userPage.label"/></a></li>
+                <li><a href="/main/clercPage"><g:message code="clercPage.label"/></a></li>
+                <li><a href="/main/adminPage"><g:message code="adminPage.label"/></a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <sec:ifNotLoggedIn>
-                    <li><a href="/login">Login</a></li>
-                    <li><a href="/">Register</a></li>
+                    <li><a href="/login"><g:message code="loginPage.label"/></a></li>
+                    <li><a href="/"><g:message code="registerPage.label"/></a></li>
                 </sec:ifNotLoggedIn>
                 <sec:ifLoggedIn>
-                    <li><a href="/logout">Logout</a></li>
+                    <li><a href="/logout"><g:message code="logoutPage.label"/></a></li>
                 </sec:ifLoggedIn>
             </ul>
         </div>
