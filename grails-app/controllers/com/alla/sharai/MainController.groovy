@@ -3,15 +3,13 @@ package com.alla.sharai
 import grails.plugin.springsecurity.annotation.Secured
 import grails.validation.ValidationException
 
-import static org.springframework.http.HttpStatus.CREATED
-
 class MainController {
 
     def springSecurityService
     DocumentService documentService
 
 
-    static allowedMethods = [saveDocument: "POST"]
+    static allowedMethods = [saveDocument: "POST", updateDocumentsStatus: "POST"]
 
     @Secured(['IS_AUTHENTICATED_ANONYMOUSLY'])
     def index() {}
@@ -52,7 +50,35 @@ class MainController {
     ///////////// CLERC ////////////////
 
     @Secured(['ROLE_CLERC'])
-    def clercPage() {}
+    def clercPage() {
+        List<Document> documentList = Document.findAll()
+        respond documentList, model: [documentCount: documentList.size()]
+
+    }
+
+    @Secured(['ROLE_CLERC'])
+    def updateDocumentsStatus() {
+
+        String[] approved = ((String) params.get("approvedDocs"))
+                .replaceAll("[\\[\\](){}\"]","")
+                .split(",")
+
+        String[] unapproved = ((String) params.get("unapprovedDocs"))
+                .replaceAll("[\\[\\](){}\"]","")
+                .split(",")
+
+        for (String id : approved) {
+            Document doc = Document.findById(Long.parseLong(id))
+            doc.approved = true
+            documentService.save(doc)
+        }
+        for (String id : unapproved) {
+            Document doc = Document.findById(Long.parseLong(id))
+            doc.approved = false
+            documentService.save(doc)
+        }
+        return true
+    }
 
     ///////////// ADMIN ////////////////
 
