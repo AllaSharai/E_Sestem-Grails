@@ -61,7 +61,7 @@
             <ul class="nav navbar-nav navbar-right">
                 <sec:ifNotLoggedIn>
                     <li><a href="/login"><g:message code="loginPage.label"/></a></li>
-                    <li><a href="/"><g:message code="registerPage.label"/></a></li>
+                    <li><a href="/main/register"><g:message code="registerPage.label"/></a></li>
                 </sec:ifNotLoggedIn>
                 <sec:ifLoggedIn>
                     <li><a href="/logout"><g:message code="logoutPage.label"/></a></li>

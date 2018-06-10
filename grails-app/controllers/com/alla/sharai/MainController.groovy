@@ -1,19 +1,52 @@
 package com.alla.sharai
 
+import grails.gorm.transactions.Transactional
 import grails.plugin.springsecurity.annotation.Secured
 import grails.plugins.rendering.pdf.PdfRenderingService
 import grails.validation.ValidationException
+
+import static org.springframework.http.HttpStatus.CREATED
+import static org.springframework.http.HttpStatus.NOT_FOUND
 
 class MainController {
 
     def springSecurityService
     DocumentService documentService
     PdfRenderingService pdfRenderingService
+    UserService userService
 
-    static allowedMethods = [saveDocument: "POST", updateDocumentsStatus: "POST"]
+    static allowedMethods = [saveDocument: "POST", updateDocumentsStatus: "POST", registerUser: "POST"]
 
     @Secured(['IS_AUTHENTICATED_ANONYMOUSLY'])
     def index() {}
+
+    @Secured(['IS_AUTHENTICATED_ANONYMOUSLY'])
+    def register() {
+        respond new User(params)
+    }
+
+    @Secured(['IS_AUTHENTICATED_ANONYMOUSLY'])
+    @Transactional
+    def registerUser(User user) {
+        if (user == null) {
+            notFound()
+            return
+        }
+
+        def newUser = new User(username: user.username, enabled: false, password: springSecurityService.encodePassword(user.password),
+                pesel: user.pesel, email: user.email,
+                firstName: user.firstName, lastName: user.lastName)
+
+        try {
+            userService.save(newUser)
+            UserRole.create(newUser, Role.findByAuthority("ROLE_USER"), true)
+        } catch (ValidationException e) {
+            respond user.errors, view: 'register'
+            return
+        }
+        redirect(controller: "main", action: "index")
+    }
+
 
     @Secured(['ROLE_USER'])
     def userPage() {
@@ -61,11 +94,11 @@ class MainController {
     def updateDocumentsStatus() {
 
         String[] approved = ((String) params.get("approvedDocs"))
-                .replaceAll("[\\[\\](){}\"]","")
+                .replaceAll("[\\[\\](){}\"]", "")
                 .split(",")
 
         String[] unapproved = ((String) params.get("unapprovedDocs"))
-                .replaceAll("[\\[\\](){}\"]","")
+                .replaceAll("[\\[\\](){}\"]", "")
                 .split(",")
 
         for (String id : approved) {
@@ -91,9 +124,18 @@ class MainController {
     @Secured(['ROLE_ADMIN'])
     def adminPage() {}
 
-
     ///////////// UTILS ///////////////
     private def getCurrentUser() {
         return (User) springSecurityService.getCurrentUser()
+    }
+
+    private void notFound() {
+        request.withFormat {
+            form multipartForm {
+                flash.message = message(code: 'default.not.found.message', args: [message(code: 'user.label', default: 'User'), params.id])
+                redirect action: "index", method: "GET"
+            }
+            '*' { render status: NOT_FOUND }
+        }
     }
 }
