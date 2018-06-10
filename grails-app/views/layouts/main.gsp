@@ -46,9 +46,17 @@
         <div class="navbar-collapse collapse" aria-expanded="false" style="height: 0.8px;">
             <ul class="nav navbar-nav navbar-left">
                 <li><a href="/"><g:message code="homePage.label"/></a></li>
-                <li><a href="/main/userPage"><g:message code="userPage.label"/></a></li>
-                <li><a href="/main/clercPage"><g:message code="clercPage.label"/></a></li>
-                <li><a href="/main/adminPage"><g:message code="adminPage.label"/></a></li>
+            <sec:ifLoggedIn>
+                <sec:ifAllGranted roles="ROLE_USER">
+                    <li><a href="/main/userPage"><g:message code="userPage.label"/></a></li>
+                </sec:ifAllGranted>
+                <sec:ifAllGranted roles="ROLE_CLERC">
+                    <li><a href="/main/clercPage"><g:message code="clercPage.label"/></a></li>
+                </sec:ifAllGranted>
+                <sec:ifAllGranted roles="ROLE_ADMIN">
+                    <li><a href="/main/adminPage"><g:message code="adminPage.label"/></a></li>
+                </sec:ifAllGranted>
+            </sec:ifLoggedIn>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <sec:ifNotLoggedIn>
