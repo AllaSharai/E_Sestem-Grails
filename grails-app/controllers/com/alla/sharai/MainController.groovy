@@ -1,13 +1,14 @@
 package com.alla.sharai
 
 import grails.plugin.springsecurity.annotation.Secured
+import grails.plugins.rendering.pdf.PdfRenderingService
 import grails.validation.ValidationException
 
 class MainController {
 
     def springSecurityService
     DocumentService documentService
-
+    PdfRenderingService pdfRenderingService
 
     static allowedMethods = [saveDocument: "POST", updateDocumentsStatus: "POST"]
 
@@ -80,6 +81,11 @@ class MainController {
         return true
     }
 
+    @Secured(['ROLE_CLERC'])
+    def getPdf(long id) {
+        Document document = Document.findById(id)
+        renderPdf(template: 'pdfTemplate', model: [document: document], filename: "document.pdf")
+    }
     ///////////// ADMIN ////////////////
 
     @Secured(['ROLE_ADMIN'])

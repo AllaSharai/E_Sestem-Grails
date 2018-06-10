@@ -27,7 +27,7 @@
             <tr>
                 <td>${document.id}</td>
                 <td>${document.owner.firstName} ${document.owner.lastName}</td>
-                <td>${document.title}</td>
+                <td><a href="/main/getPdf?id=${document.id}">${document.title}</a></td>
                 <td>${document.text}</td>
                 <td>Approved: <input type="checkbox" <g:if test="${document.approved}">checked</g:if>></td>
             </tr>
