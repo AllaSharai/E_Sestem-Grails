@@ -63,6 +63,7 @@ dependencies {
     runtime "org.postgresql:postgresql:9.4.1208.jre7"
     compile 'org.grails.plugins:rendering:2.0.3'
     runtime 'org.springframework:spring-test:4.1.6.RELEASE'
+    compile 'org.grails.plugins:mail:2.0.0'
 }
 
 bootRun {

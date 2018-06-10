@@ -14,6 +14,7 @@ class MainController {
     DocumentService documentService
     PdfRenderingService pdfRenderingService
     UserService userService
+    def mailService
 
     static allowedMethods = [saveDocument: "POST", updateDocumentsStatus: "POST", registerUser: "POST"]
 
@@ -33,13 +34,24 @@ class MainController {
             return
         }
 
-        def newUser = new User(username: user.username, enabled: false, password: springSecurityService.encodePassword(user.password),
+        def newUser = new User(username: user.username, enabled: true, accountLocked: true,
+                password: springSecurityService.encodePassword(user.password),
                 pesel: user.pesel, email: user.email,
                 firstName: user.firstName, lastName: user.lastName)
 
         try {
             userService.save(newUser)
             UserRole.create(newUser, Role.findByAuthority("ROLE_USER"), true)
+            def registrationToken = new RegistrationToken(token: UUID.randomUUID().toString(), owner: newUser)
+            registrationToken.save(flash: true)
+
+            mailService.sendMail {
+                to newUser.email
+                from "admin@eSystem.com"
+                subject "New user"
+                text "Please open the link to activate your account \n 127.0.0.1:9090/main/activate?token=" + registrationToken.token
+            }
+
         } catch (ValidationException e) {
             respond user.errors, view: 'register'
             return
@@ -47,6 +59,15 @@ class MainController {
         redirect(controller: "main", action: "index")
     }
 
+    @Transactional
+    @Secured(['IS_AUTHENTICATED_ANONYMOUSLY'])
+    def activate(String token) {
+        RegistrationToken registrationToken = RegistrationToken.findByToken(token)
+        User user = registrationToken.getOwner()
+        user.accountLocked = false
+        userService.save(user)
+        redirect(controller: "main", action: "index")
+    }
 
     @Secured(['ROLE_USER'])
     def userPage() {

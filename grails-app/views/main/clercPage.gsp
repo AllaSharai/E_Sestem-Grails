@@ -8,7 +8,7 @@
 
 <body>
 
-<div id="list-document" class="content scaffold-list" role="main">
+<div id="list-document" class="content scaffold-list" role="main" style="overflow-y: auto">
     <h1><g:message code="document.list.label"/></h1>
     <g:if test="${flash.message}">
         <div class="message" role="status">${flash.message}</div>
@@ -33,9 +33,10 @@
             </tr>
         </g:each>
     </table>
-
     <button onclick="button()" class="save"><g:message code="document.save.label"/></button>
-
+    <br>
+    <br>
+    <br>
     <script>
 
         function button() {

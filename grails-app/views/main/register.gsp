@@ -28,6 +28,8 @@
             <f:field bean="user" property="firstName"/>
             <f:field bean="user" property="lastName"/>
             <f:field bean="user" property="pesel"/>
+            <h2><g:message code="default.checkEmail.label"/></h2>
+
         </fieldset>
         <fieldset class="buttons">
             <g:submitButton name="registerUser" value="${message(code: 'default.button.register.label', default: 'Register')}" />
