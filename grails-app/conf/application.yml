@@ -138,3 +138,9 @@ guide:
         - en
         - pl
         - ru
+
+recaptcha:
+    publicKey: "6Ldl0UAUAAAAAHEtWwXucVuLGyCkyFPNCOPMnt_B"
+    privateKey: "6Ldl0UAUAAAAAPkhGXGSW3iBxBRB6skqCytppm8z"
+    includeScript: true
+    includeNoScript: true

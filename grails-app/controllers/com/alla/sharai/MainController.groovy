@@ -4,6 +4,7 @@ import grails.gorm.transactions.Transactional
 import grails.plugin.springsecurity.annotation.Secured
 import grails.plugins.rendering.pdf.PdfRenderingService
 import grails.validation.ValidationException
+import org.springframework.validation.Errors
 
 import static org.springframework.http.HttpStatus.CREATED
 import static org.springframework.http.HttpStatus.NOT_FOUND
@@ -15,6 +16,7 @@ class MainController {
     PdfRenderingService pdfRenderingService
     UserService userService
     def mailService
+    def recaptchaService
 
     static allowedMethods = [saveDocument: "POST", updateDocumentsStatus: "POST", registerUser: "POST"]
 
@@ -34,6 +36,15 @@ class MainController {
             return
         }
 
+        def recaptchaOK = true
+        if (!recaptchaService.verifyAnswer(session, request.getRemoteAddr(), params)) {
+            recaptchaOK = false
+        }
+
+        if (!recaptchaOK) {
+            redirect(controller: "main", action: "register")
+        }
+
         def newUser = new User(username: user.username, enabled: true, accountLocked: true,
                 password: springSecurityService.encodePassword(user.password),
                 pesel: user.pesel, email: user.email,
@@ -49,7 +60,7 @@ class MainController {
                 to newUser.email
                 from "admin@eSystem.com"
                 subject "New user"
-                text "Please open the link to activate your account \n 127.0.0.1:9090/main/activate?token=" + registrationToken.token
+                text "Please open the link to activate your account " + newUser.username.toUpperCase() + " \n 127.0.0.1:9090/main/activate?token=" + registrationToken.token
             }
 
         } catch (ValidationException e) {
@@ -112,7 +123,7 @@ class MainController {
     }
 
     @Secured(['ROLE_CLERC'])
-    def updateDocumentsStatus() {
+    def updateDocumentsStatus() {g
 
         String[] approved = ((String) params.get("approvedDocs"))
                 .replaceAll("[\\[\\](){}\"]", "")

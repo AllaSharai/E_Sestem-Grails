@@ -19,6 +19,7 @@
             </g:eachError>
         </ul>
     </g:hasErrors>
+    <g:renderException exception="e"></g:renderException>
     <g:form resource="${this.user}" method="POST" url="[controller:'main',action:'registerUser']">
         <fieldset class="form">
             <f:field bean="user" property="username"/>
@@ -28,6 +29,11 @@
             <f:field bean="user" property="firstName"/>
             <f:field bean="user" property="lastName"/>
             <f:field bean="user" property="pesel"/>
+
+            <recaptcha:ifEnabled>
+                <recaptcha:recaptcha theme="light"/>
+            </recaptcha:ifEnabled>
+
             <h2><g:message code="default.checkEmail.label"/></h2>
 
         </fieldset>

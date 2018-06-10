@@ -1,3 +1,4 @@
+import com.alla.sharai.LocaleNavbarTagLib
 import grails.testing.web.taglib.TagLibUnitTest
 import org.springframework.context.MessageSource
 import spock.lang.Specification
